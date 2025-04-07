@@ -24,6 +24,9 @@ int	main(void)
 	t_data	img;
 	int		i;
 	int		j;
+	int		w;
+	int		k;
+	int		b;
 
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
@@ -31,12 +34,29 @@ int	main(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 	i = 0;
-	j = 1920;
+	w = 1920;
+	j = w / 2;
+	k = w / 2;
+	b = 960;
 	while (i < 1080)
 	{
-		my_mlx_pixel_put(&img, j / 2, i, 0x05FF5500);
-		i--;
-		j--;
+		if (j >= 0)
+		{
+			my_mlx_pixel_put(&img, j, i, 0x05FF5500);
+			j--;
+		}
+		if (k < w)
+		{
+			my_mlx_pixel_put(&img, k, i, 0x055ff33);
+			k++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < w)
+	{
+		my_mlx_pixel_put(&img, i, b, 0x087965a);
+		i++;
 	}
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 2, 2);
 	mlx_loop(mlx);
