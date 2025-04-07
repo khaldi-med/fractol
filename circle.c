@@ -17,22 +17,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	main(void)
+void	traingle(int hight, int width)
 {
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
 	int		i;
 	int		j;
 	int		w;
 	int		k;
 	int		b;
+	t_data	img;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-			&img.endian);
 	i = 0;
 	w = 1920;
 	j = w / 2;
@@ -58,6 +51,19 @@ int	main(void)
 		my_mlx_pixel_put(&img, i, b, 0x087965a);
 		i++;
 	}
+}
+int	main(void)
+{
+	void	*mlx;
+	void	*mlx_win;
+	t_data	img;
+
+	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "Triangle!");
+	img.img = mlx_new_image(mlx, 1920, 1080);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+			&img.endian);
+	traingle(1920, 1080);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 2, 2);
 	mlx_loop(mlx);
 }
