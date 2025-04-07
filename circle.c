@@ -1,3 +1,4 @@
+#include <math.h>
 #include <mlx.h>
 
 typedef struct s_data
@@ -17,41 +18,27 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	traingle(int hight, int width)
+void	circle(void)
 {
-	int		i;
-	int		j;
-	int		w;
-	int		k;
-	int		b;
 	t_data	img;
+	int		x;
+	int		y;
+	int		center_x;
+	int		center_y;
+	int		radius;
+	int		dx;
+	int		dy;
 
-	i = 0;
-	w = 1920;
-	j = w / 2;
-	k = w / 2;
-	b = 960;
+	center_x = 960;
+	center_y = 540;
+	radius = 100;
 	while (i < 1080)
 	{
-		if (j >= 0)
-		{
-			my_mlx_pixel_put(&img, j, i, 0x05FF5500);
-			j--;
-		}
-		if (k < w)
-		{
-			my_mlx_pixel_put(&img, k, i, 0x055ff33);
-			k++;
-		}
-		i++;
+		if
 	}
-	i = 0;
-	while (i < w)
-	{
-		my_mlx_pixel_put(&img, i, b, 0x087965a);
-		i++;
-	}
+	my_mlx_pixel_put(&img, x, y, 0xFFFFFF);
 }
+
 int	main(void)
 {
 	void	*mlx;
@@ -63,7 +50,7 @@ int	main(void)
 	img.img = mlx_new_image(mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
-	traingle(1920, 1080);
+	circle();
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 2, 2);
 	mlx_loop(mlx);
 }
