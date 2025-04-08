@@ -1,4 +1,4 @@
-#include <mlx.h>
+#include "./minilibx_opengl_20191021/mlx.h"
 #include <unistd.h>
 
 typedef struct s_vars

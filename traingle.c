@@ -1,4 +1,4 @@
-#include <mlx.h>
+#include "./minilibx_mms_20191025_beta/mlx.h"
 
 typedef struct s_data
 {
