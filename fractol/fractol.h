@@ -4,7 +4,7 @@
 typedef struct s_complex
 {
 	double	img;
-	double	r;
+	double	real;
 
 }			t_complex;
 
