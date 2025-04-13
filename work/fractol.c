@@ -35,7 +35,8 @@ void	init_image(t_fractol *fractol)
 }
 
 /* Set default parameters for the fractal */
-void	set_default_params(t_fractol *fractol)
+/* Adjust window based on aspect ratio */
+void	adjust_window_ratio(t_fractol *fractol)
 {
 	double	aspect_ratio;
 	double	height_range;
@@ -44,65 +45,55 @@ void	set_default_params(t_fractol *fractol)
 
 	/* Calculate aspect ratio */
 	aspect_ratio = (double)WIDTH / HEIGHT;
-	/* Set complex plane boundaries based on fractal type */
-	if (fractol->fractal_type == MANDELBROT)
-	{
-		/* Mandelbrot set viewing window */
-		fractol->min.real = -2.0;
-		fractol->min.imag = -1.5;
-		fractol->max.real = 1.0;
-		fractol->max.imag = 1.5;
-		/* Adjust width based on aspect ratio to maintain proportions */
-		height_range = fractol->max.imag - fractol->min.imag;
-		width_range = height_range * aspect_ratio;
-		/* Center the view horizontally */
-		mid_real = (fractol->min.real + fractol->max.real) / 2.0;
-		fractol->min.real = mid_real - width_range / 2.0;
-		fractol->max.real = mid_real + width_range / 2.0;
-	}
-	/* Set default Julia set complex parameter */
-	if (fractol->fractal_type == JULIA)
-	{
-		/* These parameters create a visually striking Julia set */
-		fractol->julia_c.real = -0.4;
-		fractol->julia_c.imag = 0.6;
-		/*
-     * Other interesting Julia sets to try:
-     * c = -0.7 + 0.27015i  (Dendrite fractal)
-     * c = -0.8 + 0.156i    (Douady's rabbit fractal)
-     * c = -0.1 + 0.8i      (Dragon-like fractal)
-     * c = 0.285 + 0.01i    (San Marco fractal)
-     * c = -0.835 - 0.2321i (Siegel disk fractal)
-     */
-	}
-	/* Initialize other parameters */
+	/* Adjust width based on aspect ratio to maintain proportions */
+	height_range = fractol->max.imag - fractol->min.imag;
+	width_range = height_range * aspect_ratio;
+	/* Center the view horizontally */
+	mid_real = (fractol->min.real + fractol->max.real) / 2.0;
+	fractol->min.real = mid_real - width_range / 2.0;
+	fractol->max.real = mid_real + width_range / 2.0;
+}
+
+/* Set Mandelbrot-specific parameters */
+void	set_mandelbrot_params(t_fractol *fractol)
+{
+	/* Mandelbrot set viewing window */
+	fractol->min.real = -2.0;
+	fractol->min.imag = -1.5;
+	fractol->max.real = 1.0;
+	fractol->max.imag = 1.5;
+	adjust_window_ratio(fractol);
+	/* Set initial zoom and movement */
+	fractol->zoom = 1.0;
+	fractol->move_x = 0.0;
+	fractol->move_y = 0.0;
+}
+
+/* Set Julia-specific parameters */
+void	set_julia_params(t_fractol *fractol)
+{
+	/* These parameters create a visually striking Julia set */
+	fractol->julia_c.real = -0.4;
+	fractol->julia_c.imag = 0.6;
+	/* Set initial zoom and movement */
+	fractol->zoom = 0.8;
+	fractol->move_x = 0.0;
+	fractol->move_y = 0.0;
+}
+
+/* Set default parameters for the fractal */
+void	set_default_params(t_fractol *fractol)
+{
+	/* Initialize common parameters */
 	fractol->max_iterations = MAX_ITERATIONS;
 	fractol->color_scheme = COLOR_SCHEME_1;
 	fractol->julia_mouse_track = 0;
-	/* Set initial zoom and movement */
-	if (fractol->fractal_type == JULIA)
-	{
-		/*
-     * Julia set initial viewing parameters
-     * Zoom of 0.8 provides a good balance between:
-     * - Showing the complete set (contained within a circle of radius 2)
-     * - Maintaining enough detail to see the fractal structure
-     * - Providing room to zoom out if needed
-     */
-		fractol->zoom = 0.8;
-		/*
-     * Start with perfect centering at the origin
-     * Julia sets are always centered at (0,0)
-     */
-		fractol->move_x = 0.0;
-		fractol->move_y = 0.0;
-	}
-	else /* MANDELBROT */
-	{
-		fractol->zoom = 1.0;
-		fractol->move_x = 0.0;
-		fractol->move_y = 0.0;
-	}
+	
+	/* Set specific parameters based on fractal type */
+	if (fractol->fractal_type == MANDELBROT)
+		set_mandelbrot_params(fractol);
+	else if (fractol->fractal_type == JULIA)
+		set_julia_params(fractol);
 }
 
 /* Parse command line arguments and set the fractal type */
@@ -143,48 +134,73 @@ void	print_usage(void)
 	exit(0);
 }
 
+/* Create window title based on fractal type */
+void	create_window_title(t_fractol *fractol, char *title)
+{
+	strcpy(title, "Fractol - ");
+	if (fractol->fractal_type == MANDELBROT)
+		strcat(title, "Mandelbrot");
+	else
+		strcat(title, "Julia");
+}
+
+/* Initialize MLX and window */
+void	init_window(t_fractol *fractol)
+{
+	char	window_title[50];
+
+	fractol->mlx = mlx_init();
+	if (!fractol->mlx)
+		error_exit(ERROR_MLX);
+	
+	create_window_title(fractol, window_title);
+	fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, window_title);
+	if (!fractol->win)
+	{
+		mlx_destroy_display(fractol->mlx);
+		free(fractol->mlx);
+		error_exit(ERROR_WINDOW);
+	}
+	init_image(fractol);
+}
+
+/* Set up all event handlers */
+void	setup_events(t_fractol *fractol)
+{
+	mlx_hook(fractol->win, KEY_PRESS, 0, handle_key, fractol);
+	mlx_hook(fractol->win, CLIENT_EXIT, 0, close_window, fractol);
+	mlx_mouse_hook(fractol->win, handle_mouse, fractol);
+	mlx_hook(fractol->win, MOUSE_MOVE, 0, handle_mouse_move, fractol);
+}
+
+/* Perform initial render and display */
+void	setup_render(t_fractol *fractol)
+{
+	render_fractol(fractol);
+	mlx_do_sync(fractol->mlx);
+	
+	mlx_put_image_to_window(fractol->mlx, fractol->win, 
+		fractol->img.img_ptr, 0, 0);
+	mlx_do_sync(fractol->mlx);
+	
+	printf("Rendering %s fractal... Window should appear shortly.\n",
+		fractol->fractal_type == MANDELBROT ? "Mandelbrot" : "Julia");
+}
+
 /* Main function */
 int	main(int argc, char **argv)
 {
 	t_fractol	fractol;
-	char		window_title[50];
 
 	if (argc == 1 || (argc == 2 && strcmp(argv[1], "--help") == 0))
 		print_usage();
-	fractol.mlx = mlx_init();
-	if (!fractol.mlx)
-		error_exit(ERROR_MLX);
+	
 	parse_args(argc, argv, &fractol);
-	window_title[50] = "Fractol - ";
-	if (fractol.fractal_type == MANDELBROT)
-		strcat(window_title, "Mandelbrot");
-	else
-		strcat(window_title, "Julia");
-	fractol.win = mlx_new_window(fractol.mlx, WIDTH, HEIGHT, window_title);
-	if (!fractol.win)
-	{
-		mlx_destroy_display(fractol.mlx);
-		free(fractol.mlx);
-		error_exit(ERROR_WINDOW);
-	}
-	init_image(&fractol);
+	init_window(&fractol);
 	set_default_params(&fractol);
-	/* Set up event handlers before initial render */
-	mlx_hook(fractol.win, KEY_PRESS, 0, handle_key, &fractol);
-	mlx_hook(fractol.win, CLIENT_EXIT, 0, close_window, &fractol);
-	mlx_mouse_hook(fractol.win, handle_mouse, &fractol);
-	mlx_hook(fractol.win, MOUSE_MOVE, 0, handle_mouse_move, &fractol);
-	/* Perform initial render and force update */
-	render_fractol(&fractol);
-	mlx_do_sync(fractol.mlx);
-	/* Put image to window again to ensure it's displayed */
-	mlx_put_image_to_window(fractol.mlx, fractol.win, fractol.img.img_ptr, 0,
-			0);
-	mlx_do_sync(fractol.mlx);
-	/* Enter the main event loop */
-	printf("Rendering %s fractal... Window should appear shortly.\n",
-			fractol.fractal_type == MANDELBROT ? "Mandelbrot" : "Julia");
+	setup_events(&fractol);
+	setup_render(&fractol);
+	
 	mlx_loop(fractol.mlx);
-	/* This point is never reached due to mlx_loop, but good practice */
 	return (0);
 }

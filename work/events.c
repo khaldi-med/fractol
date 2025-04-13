@@ -8,15 +8,19 @@ int	close_window(t_fractol *fractol)
 }
 
 /* Handle keyboard movement keys (UP, DOWN, LEFT, RIGHT) */
-static void	handle_view_keys(int keycode, t_fractol *fractol)
+/* Calculate the movement amount based on fractal type and zoom */
+static double	calculate_move_amount(t_fractol *fractol)
 {
 	double	move_amount;
 	double	window_scale;
 
 	/* Use the smaller dimension for consistent movement */
-	window_scale = (WIDTH < HEIGHT) ? WIDTH : HEIGHT;
+	if (WIDTH < HEIGHT)
+		window_scale = WIDTH;
+	else
+		window_scale = HEIGHT;
+	
 	/* Scale movement based on zoom level and window size */
-	/* For Julia, we want movement to be proportional to the view size */
 	if (fractol->fractal_type == JULIA)
 	{
 		/* 4.0 is the base range (-2 to 2) */
@@ -26,6 +30,16 @@ static void	handle_view_keys(int keycode, t_fractol *fractol)
 	{
 		move_amount = 0.1 / fractol->zoom;
 	}
+	return (move_amount);
+}
+
+/* Handle keyboard movement keys (UP, DOWN, LEFT, RIGHT) */
+static void	handle_view_keys(int keycode, t_fractol *fractol)
+{
+	double	move_amount;
+
+	move_amount = calculate_move_amount(fractol);
+	
 	/* Apply movement with the calculated amount */
 	if (keycode == KEY_UP)
 		fractol->move_y -= move_amount;
@@ -58,39 +72,45 @@ int	handle_key(int keycode, t_fractol *fractol)
 }
 
 /* Handle mouse movement for Julia set */
-int	handle_mouse_move(int x, int y, t_fractol *fractol)
+/* Update Julia parameters based on mouse position */
+static void	update_julia_params(int x, int y, t_fractol *fractol)
 {
 	double	real_range;
 	double	imag_range;
 
+	/* Map mouse coordinates to create interesting Julia sets */
+	real_range = 1.5;
+	imag_range = 1.5;
+	fractol->julia_c.real = real_range * ((double)x / WIDTH - 0.5);
+	fractol->julia_c.imag = imag_range * ((double)y / HEIGHT - 0.5);
+}
+
+/* Clamp Julia parameters to ensure interesting patterns */
+static void	clamp_julia_params(t_fractol *fractol)
+{
+	/* Clamp values to ensure interesting patterns */
+	if (fractol->julia_c.real > 0.7)
+		fractol->julia_c.real = 0.7;
+	if (fractol->julia_c.real < -1.5)
+		fractol->julia_c.real = -1.5;
+	if (fractol->julia_c.imag > 1.0)
+		fractol->julia_c.imag = 1.0;
+	if (fractol->julia_c.imag < -1.0)
+		fractol->julia_c.imag = -1.0;
+}
+
+/* Handle mouse movement for Julia set */
+int	handle_mouse_move(int x, int y, t_fractol *fractol)
+{
 	if (fractol->fractal_type == JULIA && fractol->julia_mouse_track)
 	{
 		/* Map mouse coordinates to complex plane for Julia parameter */
-		/* Map mouse coordinates to create interesting Julia sets */
-		real_range = 1.5;
-		imag_range = 1.5;
-		fractol->julia_c.real = real_range * ((double)x / WIDTH - 0.5);
-		fractol->julia_c.imag = imag_range * ((double)y / HEIGHT - 0.5);
-		/*
-     * Interesting Julia sets typically occur:
-     * 1. For c values within the Mandelbrot set
-     * 2. Specifically near the boundary of the Mandelbrot set
-     * 3. When |c| is less than 2.0
-     */
-		/* Clamp values to ensure interesting patterns */
-		if (fractol->julia_c.real > 0.7)
-			fractol->julia_c.real = 0.7;
-		if (fractol->julia_c.real < -1.5)
-			fractol->julia_c.real = -1.5;
-		if (fractol->julia_c.imag > 1.0)
-			fractol->julia_c.imag = 1.0;
-		if (fractol->julia_c.imag < -1.0)
-			fractol->julia_c.imag = -1.0;
+		update_julia_params(x, y, fractol);
+		clamp_julia_params(fractol);
 		render_fractol(fractol);
 	}
 	return (0);
 }
-
 /* Apply zoom centered on mouse position */
 static void	apply_zoom(t_complex mouse_pos, double zoom_factor,
 		t_fractol *fractol)
