@@ -1,10 +1,8 @@
 #include "draw.h"
-#include <string.h>
-
 /* Display an error message and exit the program */
 void	error_exit(char *message)
 {
-	printf("%s\n", message);
+	ft_printf("%s\n", message);
 	exit(1);
 }
 
@@ -101,15 +99,15 @@ void	parse_args(int argc, char **argv, t_fractol *fractol)
 {
 	if (argc < 2)
 		error_exit(ERROR_ARGS);
-	if (strcmp(argv[1], "mandelbrot") == 0)
+	if (ft_strcmp(argv[1], "mandelbrot") == 0)
 		fractol->fractal_type = MANDELBROT;
-	else if (strcmp(argv[1], "julia") == 0)
+	else if (ft_strcmp(argv[1], "julia") == 0)
 	{
 		fractol->fractal_type = JULIA;
 		if (argc >= 4)
 		{
-			fractol->julia_c.real = atof(argv[2]);
-			fractol->julia_c.imag = atof(argv[3]);
+			fractol->julia_c.real = ft_atof(argv[2]);
+			fractol->julia_c.imag = ft_atof(argv[3]);
 		}
 	}
 	else
@@ -119,31 +117,29 @@ void	parse_args(int argc, char **argv, t_fractol *fractol)
 /* Print program usage instructions */
 void	print_usage(void)
 {
-	printf("Usage: ./fractol [fractal_type] [parameters]\n\n");
-	printf("Available fractal types:\n");
-	printf("  mandelbrot    : Render the Mandelbrot set\n");
-	printf("  julia [re] [im]: Render the Julia set with optional parameters\n");
-	printf("                   Default: re=-0.7, im=0.27015\n\n");
-	printf("Controls:\n");
-	printf("  Arrow keys    : Move the view\n");
-	printf("  Mouse wheel   : Zoom in/out\n");
-	printf("  +/-          : Increase/decrease iterations\n");
-	printf("  C            : Cycle color schemes\n");
-	printf("  R            : Reset view\n");
-	printf("  ESC          : Exit program\n");
+	ft_printf("Usage: ./fractol [fractal_type] [parameters]\n\n");
+	ft_printf("Available fractal types:\n");
+	ft_printf("  mandelbrot    : Render the Mandelbrot set\n");
+	ft_printf("  julia [re] [im]: Render the Julia set with optional parameters\n");
+	ft_printf("                   Default: re=-0.7, im=0.27015\n\n");
+	ft_printf("Controls:\n");
+	ft_printf("  Arrow keys    : Move the view\n");
+	ft_printf("  Mouse wheel   : Zoom in/out\n");
+	ft_printf("  +/-          : Increase/decrease iterations\n");
+	ft_printf("  C            : Cycle color schemes\n");
+	ft_printf("  R            : Reset view\n");
+	ft_printf("  ESC          : Exit program\n");
 	exit(0);
 }
-
 /* Create window title based on fractal type */
 void	create_window_title(t_fractol *fractol, char *title)
 {
-	strcpy(title, "Fractol - ");
+	ft_strcpy(title, "Fractol - ");
 	if (fractol->fractal_type == MANDELBROT)
-		strcat(title, "Mandelbrot");
+		ft_strcat(title, "Mandelbrot");
 	else
-		strcat(title, "Julia");
+		ft_strcat(title, "Julia");
 }
-
 /* Initialize MLX and window */
 void	init_window(t_fractol *fractol)
 {
@@ -182,9 +178,10 @@ void	setup_render(t_fractol *fractol)
 	mlx_put_image_to_window(fractol->mlx, fractol->win, 
 		fractol->img.img_ptr, 0, 0);
 	mlx_do_sync(fractol->mlx);
-	
-	printf("Rendering %s fractal... Window should appear shortly.\n",
-		fractol->fractal_type == MANDELBROT ? "Mandelbrot" : "Julia");
+	if (fractol->fractal_type == MANDELBROT)
+		ft_printf("Rendering Mandelbrot fractal... Window should appear shortly.\n");
+	else
+		ft_printf("Rendering Julia fractal... Window should appear shortly.\n");
 }
 
 /* Main function */
@@ -192,9 +189,8 @@ int	main(int argc, char **argv)
 {
 	t_fractol	fractol;
 
-	if (argc == 1 || (argc == 2 && strcmp(argv[1], "--help") == 0))
+	if (argc == 1 || (argc == 2 && ft_strcmp(argv[1], "--help") == 0))
 		print_usage();
-	
 	parse_args(argc, argv, &fractol);
 	init_window(&fractol);
 	set_default_params(&fractol);

@@ -158,8 +158,10 @@ int	handle_mouse(int button, int x, int y, t_fractol *fractol)
 	{
 		/* Toggle Julia mouse tracking on left click */
 		fractol->julia_mouse_track = !fractol->julia_mouse_track;
-		printf("Julia mouse tracking: %s\n",
-				fractol->julia_mouse_track ? "ON" : "OFF");
+		if (fractol->julia_mouse_track)
+			ft_printf("Julia mouse tracking: ON\n");
+		else
+			ft_printf("Julia mouse tracking: OFF\n");
 	}
 	return (0);
 }

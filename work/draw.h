@@ -3,10 +3,9 @@
 
 /* Required libraries */
 # include "../mlx/mlx.h" /* MiniLibX graphics library */
+# include "./libft/libft.h" /* For libft functions */
+# include "./ft_printf/ft_printf.h" /* For ft_printf functions */
 # include <math.h>       /* For mathematical operations */
-# include <stdio.h>      /* For printf, perror */
-# include <stdlib.h>     /* For memory allocation, free, exit */
-
 /* Error messages */
 # define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]"
 # define ERROR_MLX "Error: Failed to initialize MLX"
@@ -118,5 +117,12 @@ int			close_window(t_fractol *fractol);
 /* Utility functions */
 void		reset_view(t_fractol *fractol);
 void		change_iterations(t_fractol *fractol, int increase);
+
+/* String utility functions */
+int			ft_strcmp(const char *s1, const char *s2);
+char		*ft_strcpy(char *dest, const char *src);
+char		*ft_strcat(char *dest, const char *src);
+double		ft_atof(const char *str);
+int			ft_isspace(int c);
 
 #endif
