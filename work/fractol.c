@@ -1,4 +1,5 @@
 #include "draw.h"
+
 /* Display an error message and exit the program */
 void	error_exit(char *message)
 {
@@ -12,10 +13,10 @@ void	clean_exit(t_fractol *fractol, int exit_code)
 	if (fractol->img.img_ptr)
 		mlx_destroy_image(fractol->mlx, fractol->img.img_ptr);
 	if (fractol->win)
-		mlx_destroy_window(fractol->mlx, fractol->win);
+		mlx_clear_window(fractol->mlx, fractol->win);
 	if (fractol->mlx)
 	{
-		mlx_destroy_display(fractol->mlx);
+		mlx_clear_window(fractol->mlx, 0);
 		free(fractol->mlx);
 	}
 	exit(exit_code);
@@ -27,9 +28,9 @@ void	init_image(t_fractol *fractol)
 	fractol->img.img_ptr = mlx_new_image(fractol->mlx, WIDTH, HEIGHT);
 	if (!fractol->img.img_ptr)
 		error_exit(ERROR_IMAGE);
-	fractol->img.addr =
-		mlx_get_data_addr(fractol->img.img_ptr, &fractol->img.bits_per_pixel,
-				&fractol->img.line_length, &fractol->img.endian);
+	fractol->img.addr = mlx_get_data_addr(fractol->img.img_ptr,
+			&fractol->img.bits_per_pixel, &fractol->img.line_length,
+			&fractol->img.endian);
 }
 
 /* Set default parameters for the fractal */
@@ -86,7 +87,6 @@ void	set_default_params(t_fractol *fractol)
 	fractol->max_iterations = MAX_ITERATIONS;
 	fractol->color_scheme = COLOR_SCHEME_1;
 	fractol->julia_mouse_track = 0;
-	
 	/* Set specific parameters based on fractal type */
 	if (fractol->fractal_type == MANDELBROT)
 		set_mandelbrot_params(fractol);
@@ -148,12 +148,11 @@ void	init_window(t_fractol *fractol)
 	fractol->mlx = mlx_init();
 	if (!fractol->mlx)
 		error_exit(ERROR_MLX);
-	
 	create_window_title(fractol, window_title);
 	fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, window_title);
 	if (!fractol->win)
 	{
-		mlx_destroy_display(fractol->mlx);
+		mlx_clear_window(fractol->mlx, 0);
 		free(fractol->mlx);
 		error_exit(ERROR_WINDOW);
 	}
@@ -174,9 +173,8 @@ void	setup_render(t_fractol *fractol)
 {
 	render_fractol(fractol);
 	mlx_do_sync(fractol->mlx);
-	
-	mlx_put_image_to_window(fractol->mlx, fractol->win, 
-		fractol->img.img_ptr, 0, 0);
+	mlx_put_image_to_window(fractol->mlx, fractol->win, fractol->img.img_ptr, 0,
+		0);
 	mlx_do_sync(fractol->mlx);
 	if (fractol->fractal_type == MANDELBROT)
 		ft_printf("Rendering Mandelbrot fractal... Window should appear shortly.\n");
@@ -196,7 +194,6 @@ int	main(int argc, char **argv)
 	set_default_params(&fractol);
 	setup_events(&fractol);
 	setup_render(&fractol);
-	
 	mlx_loop(fractol.mlx);
 	return (0);
 }

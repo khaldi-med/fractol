@@ -2,10 +2,10 @@
 # define FT_DRAW_H
 
 /* Required libraries */
-# include "../mlx/mlx.h" /* MiniLibX graphics library */
-# include "./libft/libft.h" /* For libft functions */
+# include "../mlx/mlx.h"            /* MiniLibX graphics library */
 # include "./ft_printf/ft_printf.h" /* For ft_printf functions */
-# include <math.h>       /* For mathematical operations */
+# include "./libft/libft.h"         /* For libft functions */
+# include <math.h>                  /* For mathematical operations */
 /* Error messages */
 # define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]"
 # define ERROR_MLX "Error: Failed to initialize MLX"

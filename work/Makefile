@@ -6,7 +6,7 @@
 #    By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:45:26 by mohkhald          #+#    #+#              #
-#    Updated: 2025/04/13 16:40:12 by mohkhald         ###   ########.fr        #
+#    Updated: 2025/04/13 22:27:04 by mohkhald         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,17 +36,7 @@ FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 # Include directories
 INCLUDES = -I. -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR)
 
-# Platform detection
-UNAME := $(shell uname)
-
-# Platform-specific settings
-ifeq ($(UNAME), Darwin)
-	# macOS
-	MLX_FLAGS = -framework OpenGL -framework AppKit
-else
-	# Linux
-	MLX_FLAGS = -lXext -lX11 -lm -lz
-endif
+MLX_FLAGS = -framework OpenGL -framework AppKit
 
 # Default target
 all: $(NAME)
