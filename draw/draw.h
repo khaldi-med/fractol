@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   draw.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:33:37 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/13 02:18:10 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/13 02:36:34 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef DRAW_H
+# define DRAW_H
 
 /* Required libraries */
-// # include "ft_printf/ft_printf.h" /* Custom printf library */
-// # include "libft/libft.h"         /* Custom libft library */
-# include <math.h>   /* For mathematical operations */
-# include <mlx.h>    /* MiniLibX graphics library */
-# include <stdio.h>  /* For printf, perror */
-# include <stdlib.h> /* For memory allocation, free, exit */
-# include <unistd.h> /* For write */
+# include "../mlx/mlx.h" /* MiniLibX graphics library */
+# include <math.h>       /* For mathematical operations */
+# include <stdio.h>      /* For printf, perror */
+# include <stdlib.h>     /* For memory allocation, free, exit */
+# include <unistd.h>     /* For write */
 
 /* Error messages */
-# define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]\n"
+# define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]\nFractal types: mandelbrot"
 # define ERROR_MLX "Error: Failed to initialize MLX"
 # define ERROR_WINDOW "Error: Failed to create window"
 # define ERROR_IMAGE "Error: Failed to create image"
@@ -76,6 +74,7 @@ typedef struct s_complex
 	double	real;
 	double	imag;
 }			t_complex;
+
 /* Image data structure */
 typedef struct s_img
 {
@@ -85,23 +84,23 @@ typedef struct s_img
 	int		line_length;
 	int		endian;
 }			t_img;
-
 /* Main data structure */
 typedef struct s_fractol
 {
-	void *mlx;             /* MLX pointer */
-	void *win;             /* Window pointer */
-	t_img img;             /* Image data */
-	int fractal_type;      /* Current fractal type */
-	double zoom;           /* Zoom level */
-	double move_x;         /* X-axis offset */
-	double move_y;         /* Y-axis offset */
-	t_complex julia_c;     /* Julia set parameter */
-	t_complex min;         /* Minimum coordinates in complex plane */
-	t_complex max;         /* Maximum coordinates in complex plane */
-	int max_iterations;    /* Maximum iterations for fractal calculation */
-	int color_scheme;      /* Current color scheme */
-	int julia_mouse_track; /* Flag to track mouse for Julia set parameters */
+	void *mlx;          /* MLX pointer */
+	void *win;          /* Window pointer */
+	t_img img;          /* Image data */
+	int fractal_type;   /* Current fractal type */
+	double zoom;        /* Zoom level */
+	double move_x;      /* X-axis offset */
+	double move_y;      /* Y-axis offset */
+	t_complex julia_c;  /* Julia set parameter */
+	t_complex min;      /* Minimum coordinates in complex plane */
+	t_complex max;      /* Maximum coordinates in complex plane */
+	int max_iterations; /* Maximum iterations for fractal calculation */
+	int color_scheme;   /* Current color scheme */
+	int		julia_mouse_track;
+	/* Flag to track mouse for Julia set parameters */
 }			t_fractol;
 
 /* Function prototypes */

@@ -6,7 +6,7 @@
 #    By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:45:26 by mohkhald          #+#    #+#              #
-#    Updated: 2025/04/13 02:23:57 by mohkhald         ###   ########.fr        #
+#    Updated: 2025/04/13 02:29:17 by mohkhald         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 # Directories
-MLX_DIR = ./mlx
+MLX_DIR = ../mlx
 
 # Libraries
 MLX = $(MLX_DIR)/libmlx.a
