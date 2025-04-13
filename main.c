@@ -3,22 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 17:11:01 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/08 18:27:21 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
 /*   By: mohammed                                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025-04-08 18:09:53                      #+#    #+#             */
-/*   Updated: 2025-04-08 18:09:53                     ###   ########.fr       */
+/*   Updated: 2025/04/13 15:49:17 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +108,6 @@ int	parse_args(t_fractol *fractol, int argc, char **argv)
 {
 	if (argc < 2)
 		return (0);
-	
 	// Handle Mandelbrot fractal
 	if (ft_strcasecmp(argv[1], "mandelbrot") == 0)
 	{
@@ -132,7 +119,6 @@ int	parse_args(t_fractol *fractol, int argc, char **argv)
 	{
 		fractol->fractal_type = JULIA;
 		fractol->julia_mouse_track = 0;
-		
 		// Handle optional Julia parameters
 		if (argc >= 4)
 		{
@@ -141,7 +127,6 @@ int	parse_args(t_fractol *fractol, int argc, char **argv)
 				ft_printf("Error: Invalid Julia parameters. Must be valid numbers.\n");
 				return (0);
 			}
-			
 			fractol->julia_c.real = ft_atof(argv[2]);
 			fractol->julia_c.imag = ft_atof(argv[3]);
 		}
@@ -153,7 +138,6 @@ int	parse_args(t_fractol *fractol, int argc, char **argv)
 		}
 		return (1);
 	}
-	
 	// Invalid fractal type
 	return (0);
 }
@@ -172,7 +156,6 @@ void	set_default_params(t_fractol *fractol)
 	fractol->move_y = 0.0;
 	fractol->max_iterations = MAX_ITERATIONS;
 	fractol->color_scheme = COLOR_SCHEME_1;
-	
 	// Set default complex plane coordinates
 	if (fractol->fractal_type == MANDELBROT)
 	{
@@ -202,13 +185,11 @@ void	init_image(t_fractol *fractol)
 	fractol->img.img_ptr = mlx_new_image(fractol->mlx, WIDTH, HEIGHT);
 	if (fractol->img.img_ptr == NULL)
 		error_exit(ERROR_IMAGE);
-	
 	fractol->img.addr = mlx_get_data_addr(
 		fractol->img.img_ptr,
 		&fractol->img.bits_per_pixel,
 		&fractol->img.line_length,
-		&fractol->img.endian
-	);
+		&fractol->img.endian);
 }
 
 /**
@@ -228,7 +209,6 @@ void	init_window(t_fractol *fractol)
 		title = "Fractol - Julia Set";
 	else
 		title = "Fractol";
-	
 	fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, title);
 	if (fractol->win == NULL)
 		error_exit(ERROR_WINDOW);
@@ -262,19 +242,15 @@ int	init_fractol(t_fractol *fractol, int argc, char **argv)
 	// Parse command line arguments
 	if (!parse_args(fractol, argc, argv))
 		return (0);
-	
 	// Initialize MLX
 	fractol->mlx = mlx_init();
 	if (fractol->mlx == NULL)
 		error_exit(ERROR_MLX);
-	
 	// Initialize window and image
 	init_window(fractol);
 	init_image(fractol);
-	
 	// Set default parameters
 	set_default_params(fractol);
-	
 	return (1);
 }
 
@@ -291,25 +267,21 @@ int	main(int argc, char **argv)
 
 	// Zero out the structure
 	ft_bzero(&fractol, sizeof(t_fractol));
-	
 	// Initialize the program
 	if (!init_fractol(&fractol, argc, argv))
 	{
 		print_usage();
 		return (0);
 	}
-	
 	// Setup event hooks
 	mlx_hook(fractol.win, KEY_PRESS, 0, handle_key, &fractol);
-	mlx_mouse_hook(fractol.win, handle_mouse, &fractol);  // Use mlx_mouse_hook for mouse buttons and scroll
+	mlx_mouse_hook(fractol.win, handle_mouse, &fractol);
+	// Use mlx_mouse_hook for mouse buttons and scroll
 	mlx_hook(fractol.win, MOUSE_MOVE, 0, handle_mouse_move, &fractol);
 	mlx_hook(fractol.win, CLIENT_EXIT, 0, close_window, &fractol);
-	
 	// Render the initial fractal
 	render_fractol(&fractol);
-	
 	// Start the main loop
 	mlx_loop(fractol.mlx);
-	
 	return (0);
 }

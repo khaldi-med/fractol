@@ -1,29 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 11:33:37 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/09 11:40:38 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
 /* Required libraries */
-# include "ft_printf/ft_printf.h" /* Custom printf library */
-# include "libft/libft.h"         /* Custom libft library */
-# include <math.h>                /* For mathematical operations */
-# include <mlx.h>                 /* MiniLibX graphics library */
-# include <stdio.h>               /* For printf, perror */
-# include <stdlib.h>              /* For memory allocation, free, exit */
-# include <unistd.h>              /* For write */
+# include "../mlx/mlx.h" /* MiniLibX graphics library */
+# include <math.h>       /* For mathematical operations */
+# include <stdio.h>      /* For printf, perror */
+# include <stdlib.h>     /* For memory allocation, free, exit */
 
 /* Error messages */
-# define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]\nFractal types: mandelbrot, julia\nParameters for Julia: real_part imaginary_part\n"
+# define ERROR_ARGS "Error: Invalid arguments\nUsage: ./fractol [fractal_type] [parameters]\nFractal types: mandelbrot"
 # define ERROR_MLX "Error: Failed to initialize MLX"
 # define ERROR_WINDOW "Error: Failed to create window"
 # define ERROR_IMAGE "Error: Failed to create image"
@@ -31,7 +16,6 @@
 /* Fractal types */
 # define MANDELBROT 1
 # define JULIA 2
-# define BURNING_SHIP 3 /* Optional bonus fractal */
 
 /* Window dimensions */
 # define WIDTH 800
@@ -86,30 +70,29 @@ typedef struct s_img
 	int		line_length;
 	int		endian;
 }			t_img;
-
 /* Main data structure */
 typedef struct s_fractol
 {
-	void		*mlx;             /* MLX pointer */
-	void		*win;             /* Window pointer */
-	t_img		img;              /* Image data */
-	int			fractal_type;     /* Current fractal type */
-	double		zoom;             /* Zoom level */
-	double		move_x;           /* X-axis offset */
-	double		move_y;           /* Y-axis offset */
-	t_complex	julia_c;          /* Julia set parameter */
-	t_complex	min;              /* Minimum coordinates in complex plane */
-	t_complex	max;              /* Maximum coordinates in complex plane */
-	int			max_iterations;   /* Maximum iterations for fractal calculation */
-	int			color_scheme;     /* Current color scheme */
-	int			julia_mouse_track; /* Flag to track mouse for Julia set parameters */
+	void *mlx;          /* MLX pointer */
+	void *win;          /* Window pointer */
+	t_img img;          /* Image data */
+	int fractal_type;   /* Current fractal type */
+	double zoom;        /* Zoom level */
+	double move_x;      /* X-axis offset */
+	double move_y;      /* Y-axis offset */
+	t_complex julia_c;  /* Julia set parameter */
+	t_complex min;      /* Minimum coordinates in complex plane */
+	t_complex max;      /* Maximum coordinates in complex plane */
+	int max_iterations; /* Maximum iterations for fractal calculation */
+	int color_scheme;   /* Current color scheme */
+	int		julia_mouse_track;
+	/* Flag to track mouse for Julia set parameters */
 }			t_fractol;
 
 /* Function prototypes */
 void		error_exit(char *message);
 void		clean_exit(t_fractol *fractol, int exit_code);
 void		print_usage(void);
-int			close_window(t_fractol *fractol);
 
 /* Utility functions */
 double		ft_atof(const char *str);
@@ -130,7 +113,6 @@ int			create_color(int iterations, int max_iterations, int color_scheme);
 /* Fractal calculation functions */
 int			mandelbrot_iterations(t_complex c, int max_iterations);
 int			julia_iterations(t_complex z, t_complex c, int max_iterations);
-int	burning_ship_iterations(t_complex c, int max_iterations); /* Optional */
 
 /* Event handling functions */
 int			handle_key(int keycode, t_fractol *fractol);
@@ -140,9 +122,6 @@ int			close_window(t_fractol *fractol);
 
 /* Utility functions */
 void		display_info(t_fractol *fractol);
-void		print_usage(void);
-void		clean_exit(t_fractol *fractol, int exit_code);
-void		error_exit(char *message);
 t_complex	pixel_to_complex(int x, int y, t_fractol *fractol);
 void		change_color_scheme(t_fractol *fractol);
 void		reset_view(t_fractol *fractol);
