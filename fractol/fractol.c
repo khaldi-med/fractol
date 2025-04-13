@@ -5,28 +5,28 @@ t_complex	add_complex(t_complex a, t_complex b)
 {
 	t_complex	result;
 
-	// Add the real and imaginary parts separately
-	// Fill in the code here
+	/* Add the real and imginary parts separately */
 	result.img = a.img + b.img;
-	result.real = b.real + b.real;
+	result.real = a.real + b.real;
 	return (result);
 }
-
 int	main(void)
 {
-	double		i;
-	double		r;
 	t_complex	t;
 	t_complex	s;
 	t_complex	result;
 
-	i = 2.5;
-	r = 3;
-	t.img = i;
-	t.real = r;
-	s.img = i + 0.2;
-	s.real = r + 3;
+	/* Initialize first complex number */
+	t.img = 2.5;
+	t.real = 3.0;
+	/* Initialize second complex number */
+	s.img = 2.7;  /* 2.5 + 0.2 */
+	s.real = 6.0; /* 3.0 + 3.0 */
+	/* Add the complex numbers */
 	result = add_complex(t, s);
-	printf("%f\n %f\n", result.img, result.real);
+	/* Print the result */
+	printf("Complex number 1: %.1f + %.1fi\n", t.real, t.img);
+	printf("Complex number 2: %.1f + %.1fi\n", s.real, s.img);
+	printf("Sum: %.1f + %.1fi\n", result.real, result.img);
 	return (0);
 }
