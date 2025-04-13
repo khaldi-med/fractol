@@ -6,15 +6,16 @@
 #    By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:45:26 by mohkhald          #+#    #+#              #
-#    Updated: 2025/04/13 02:29:17 by mohkhald         ###   ########.fr        #
+#    Updated: 2025/04/13 16:40:12 by mohkhald         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Project Name
-NAME = color
+NAME = fractol
 
 # Source files
-SRCS = draw.c utils.c
+SRCS = fractol.c render.c events.c complex.c color.c utils.c
+
 # Object files
 OBJS = $(SRCS:.c=.o)
 
@@ -51,7 +52,6 @@ $(NAME): $(MLX) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) \
 		-L$(MLX_DIR) -lmlx $(MLX_FLAGS)
 	@echo "\033[0;32mFractol compiled successfully!\033[0m"
-	@echo "Usage: ./fractol [mandelbrot/julia] [parameters]"
 
 # Compile mlx
 $(MLX):
@@ -66,7 +66,7 @@ $(MLX):
 # Clean object files
 clean:
 	@echo "\033[0;33mCleaning object files...\033[0m"
-	@make -C $(MLX_DIR) clean
+	@rm -f $(OBJS)
 	@echo "\033[0;32mCleaned object files!\033[0m"
 
 # Clean object files and executable
