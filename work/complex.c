@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   complex.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 00:21:34 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/13 16:27:57 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "draw.h"
 
 /* Calculate iterations for a point in the Mandelbrot set */
@@ -52,4 +40,3 @@ int	julia_iterations(t_complex z, t_complex c, int max_iterations)
 	}
 	return (i);
 }
-
