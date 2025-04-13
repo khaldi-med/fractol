@@ -63,8 +63,8 @@ char	*ft_strcat(char *dest, const char *src)
 /* Check if character is a space */
 int	ft_isspace(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || 
-		c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
+			c == '\r');
 }
 
 /* Custom string to double conversion */
