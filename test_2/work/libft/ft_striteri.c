@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 23:58:59 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/14 00:45:06 by mohkhald         ###   ########.fr       */
+/*   Created: 2024/11/12 19:43:04 by mohkhald          #+#    #+#             */
+/*   Updated: 2024/11/18 23:20:30 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractal.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	if ((ac == 2 && !ft_strncmp(av[1], "mandelbrot", 10)) || (ac == 4
-			&& !ft_strncmp(av[1], "julia", 5)))
+	size_t	i;
+
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
 	{
-		// print usage
-		fractal_init(&fracal);
-		fractol_render(&fractal);
-		mlx_loop(fractal.mlx);
-	}
-	else
-	{
-		ft_putstr_fd(ERROR_ARGS, 2);
-		exit(0);
+		f(i, &s[i]);
+		i++;
 	}
 }

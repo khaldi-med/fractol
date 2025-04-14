@@ -13,10 +13,10 @@ void	clean_exit(t_fractol *fractol, int exit_code)
 	if (fractol->img.img_ptr)
 		mlx_destroy_image(fractol->mlx, fractol->img.img_ptr);
 	if (fractol->win)
-		mlx_clear_window(fractol->mlx, fractol->win);
+		mlx_destroy_window(fractol->mlx, fractol->win);
 	if (fractol->mlx)
 	{
-		mlx_clear_window(fractol->mlx, 0);
+		mlx_destroy_window(fractol->mlx, fractol->win);
 		free(fractol->mlx);
 	}
 	exit(exit_code);
