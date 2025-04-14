@@ -4,14 +4,14 @@
 int close_handler(t_fractal *fractal) {
   mlx_destroy_image(fractal->mlx_connection, fractal->img.img_ptr);
   mlx_destroy_window(fractal->mlx_connection, fractal->mlx_window);
-  mlx_destroy_display(fractal->mlx_connection);
   free(fractal->mlx_connection);
-  exit(EXIT_SUCCESS);
+  exit(0);
 }
 
 int key_handler(int keysym, t_fractal *fractal) {
-  if (keysym == XK_Escape)
+  if (keysym == NoExpose)
     close_handler(fractal);
+    return 0;
 }
 
 int mouse_handler(int button, int x, int y, void *param) {

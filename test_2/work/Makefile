@@ -6,13 +6,13 @@ CFLAGS = -Wall -Wextra -Werror
 NAME = fractol
 
 # Source files
-SRCS = main.c init.c render.c math.c
+SRCS = main.c init.c render.c math.c events.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
 
 # Directories
-MLX_DIR = ./mlx
+MLX_DIR = ./minilibx
 LIBFT_DIR = ./libft
 FT_PRINTF_DIR = ./ft_printf
 
@@ -22,18 +22,17 @@ LIBFT = $(LIBFT_DIR)/libft.a
 FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 
 # Include directories
-INCLUDES = -I. -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR)
+INCLUDES = -I. -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR)
 
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext 
+LIB_FLAGS = -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 
 # Default target
 all: $(NAME)
 
 # Rule to make the executable
 $(NAME): $(MLX) $(LIBFT) $(FT_PRINTF) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)\
-		-L$(MLX_DIR) -lmlx -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf $(MLX_FLAGS)
-	@echo "\033[0;32mFractol compiled successfully!\033[0m"
+	$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LIB_FLAGS) $(MLX_FLAGS) -o $(NAME)
 
 # Compile mlx
 $(MLX):

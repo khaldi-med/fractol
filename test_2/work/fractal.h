@@ -3,16 +3,15 @@
 
 # include "./ft_printf/ft_printf.h"
 # include "./libft/libft.h"
-# include "./mlx/mlx.h"
 # include <math.h>
+# include <minilibx/mlx.h>
 
 # define WIDTH 800
 # define HEIGHT 800
 
-#define Button4			4
-#define Button5			5
-#define XK_Escape                        0xff1b
-
+# define Button4 4
+# define Button5 5
+# define NoExpose 53
 
 # define BLACK 0x000000 // RGB(0, 0, 0)
 # define WHITE 0xFFFFFF // RGB(255, 255, 255)
@@ -68,13 +67,14 @@ typedef struct s_fractal
 t_complex	sum_complex(t_complex z1, t_complex z2);
 t_complex	square_complex(t_complex z);
 
-double		map(double unscaled_num, double new_min, double new_max, double old_min, double old_max);
-double	    ft_atof(const char *str);
+double		map(double unscaled_num, double new_min, double new_max,
+				double old_min, double old_max);
+double		ft_atof(const char *str);
 void		fractal_init(t_fractal *fractal);
-void	    fractal_render(t_fractal *fractal);
-int	ft_isspace(int c);  
-int close_handler(t_fractal *fractal);
-int mouse_handler(int button, int x, int y, void *param);
-
+void		fractal_render(t_fractal *fractal);
+int			ft_isspace(int c);
+int			close_handler(t_fractal *fractal);
+int			mouse_handler(int button, int x, int y, void *param);
+int 		key_handler(int keysym, t_fractal *fractal);
 
 #endif

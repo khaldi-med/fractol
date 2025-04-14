@@ -32,6 +32,7 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 	i = 0;
 	z.x = (map(x, -2, +2, 0, WIDTH) * fractal->zoom) + fractal->shift_x;
 	z.y = (map(y, +2, -2, 0, HEIGHT) * fractal->zoom) + fractal->shift_y;
+	mandel_vs_julia(&z, &c, fractal);
 	while (i < fractal->max_iterations)
 	{
 		z = sum_complex(square_complex(z), c);
@@ -43,7 +44,7 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 		}
 		++i;
 	}
-	my_pixel_put(x, y, &fractal->img, LAVA_RED);
+	my_pixel_put(x, y, &fractal->img, NEON_ORANGE);
 }
 
 void	fractal_render(t_fractal *fractal)

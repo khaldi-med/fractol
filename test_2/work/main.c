@@ -20,6 +20,6 @@ int	main(int ac, char **av)
 	else
 	{
 		ft_putstr_fd(ERROR_MESSAGE, 2);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 }
