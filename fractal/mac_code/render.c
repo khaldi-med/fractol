@@ -6,7 +6,7 @@
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:21:01 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/15 02:01:14 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:09:14 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,18 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 	t_complex	z;
 	t_complex	c;
 	int			i;
+	t_range		old_range;
+	t_range		new_range;
 
-	z.x = (map(x, -2, 2, 0, WIDTH) / fractal->zoom) + fractal->shift_x;
-	z.y = (map(y, 2, -2, 0, HEIGHT) / fractal->zoom) + fractal->shift_y;
+	old_range.min = 0;
+	old_range.max = WIDTH;
+	new_range.min = -2;
+	new_range.max = 2;
+	z.x = (map(x, new_range, old_range) / fractal->zoom) + fractal->shift_x;
+	new_range.min = 2;
+	new_range.max = -2;
+	old_range.max = HEIGHT;
+	z.y = (map(y, new_range, old_range) / fractal->zoom) + fractal->shift_y;
 	mandel_vs_julia(&z, &c, fractal);
 	i = 0;
 	while (i < fractal->max_iterations)
@@ -78,5 +87,5 @@ void	fractal_render(t_fractal *fractal)
 		}
 	}
 	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window,
-		fractal->img.img_ptr, 0, 0);
+			fractal->img.img_ptr, 0, 0);
 }

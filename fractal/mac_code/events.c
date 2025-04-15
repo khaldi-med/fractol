@@ -22,7 +22,7 @@ int	close_handler(t_fractal *fractal)
 
 int	key_handler(int keysym, t_fractal *fractal)
 {
-	if (keysym == 53)
+	if (keysym == NoExpose)
 		close_handler(fractal);
 	return (0);
 }

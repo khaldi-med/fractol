@@ -6,7 +6,7 @@
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:34:09 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/15 14:47:11 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:03:42 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,26 @@ typedef struct s_fractal
 	double	julia_y;
 }			t_fractal;
 
+typedef struct s_range
+{
+	double	min;
+	double	max;
+}			t_range;
+
 t_complex	sum_complex(t_complex z1, t_complex z2);
 t_complex	square_complex(t_complex z);
 
-double		map(double unscaled_num, double new_min, double new_max,
-				double old_min, double old_max);
+double		map(double unscaled_num, t_range new_range, t_range old_range);
 double		ft_atof(const char *str);
+
 void		fractal_init(t_fractal *fractal);
 void		fractal_render(t_fractal *fractal);
+void		handle_julia(char **av, t_fractal *fractal);
+
 int			ft_isspace(int c);
 int			close_handler(t_fractal *fractal);
 int			mouse_handler(int button, int x, int y, void *param);
 int			key_handler(int keysym, t_fractal *fractal);
-int			mouse_move_handler(int x, int y, void *param);
+int			validate_julia_params(char *str);
 
 #endif
