@@ -6,7 +6,7 @@
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:34:09 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/15 01:50:45 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:47:11 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "./ft_printf/ft_printf.h"
 # include "./libft/libft.h"
-# include "minilibx/mlx.h"
+# include "./mlx/mlx.h"
 # include <math.h>
 
 # define WIDTH 800
