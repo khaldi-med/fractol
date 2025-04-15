@@ -6,7 +6,7 @@
 #    By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 01:32:59 by mohkhald          #+#    #+#              #
-#    Updated: 2025/04/15 01:33:56 by mohkhald         ###   ########.fr        #
+#    Updated: 2025/04/15 02:51:40 by mohkhald         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = fractol
 
-SRCS = main.c init.c render.c math.c events.c
+SRCS = parse.c main.c init.c render.c math.c events.c
 
 OBJS = $(SRCS:.c=.o)
 
