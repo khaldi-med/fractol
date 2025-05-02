@@ -6,7 +6,7 @@
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:22:18 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/15 01:55:17 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:50:44 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,13 @@ void	init_image(t_fractal *fractal)
 		malloc_error();
 	}
 	fractal->img.pixels_ptr = mlx_get_data_addr(fractal->img.img_ptr,
-												&fractal->img.bpp,
-												&fractal->img.line_len,
-												&fractal->img.endian);
+			&fractal->img.bpp, &fractal->img.line_len, &fractal->img.endian);
 }
 
 static void	data_init(t_fractal *fractal)
 {
 	fractal->escape_value = 4;
 	fractal->max_iterations = 100;
-	fractal->shift_x = 0.0;
-	fractal->shift_y = 0.0;
 	fractal->zoom = 1.0;
 }
 

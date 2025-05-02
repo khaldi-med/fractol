@@ -6,7 +6,7 @@
 /*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:21:01 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/15 16:09:14 by mohkhald         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:51:12 by mohkhald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	get_color(int i, t_fractal *fractal)
 {
 	if (i == fractal->max_iterations)
 		return (BLACK);
-	return (ELECTRIC_BLUE + (i * 10));
+	return ((LIME_SHOCK >> 16) + (i * i * i));
 }
 
 static void	handle_pixel(int x, int y, t_fractal *fractal)
@@ -55,11 +55,11 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 	old_range.max = WIDTH;
 	new_range.min = -2;
 	new_range.max = 2;
-	z.x = (map(x, new_range, old_range) / fractal->zoom) + fractal->shift_x;
+	z.x = (map(x, new_range, old_range) / fractal->zoom);
 	new_range.min = 2;
 	new_range.max = -2;
 	old_range.max = HEIGHT;
-	z.y = (map(y, new_range, old_range) / fractal->zoom) + fractal->shift_y;
+	z.y = (map(y, new_range, old_range) / fractal->zoom);
 	mandel_vs_julia(&z, &c, fractal);
 	i = 0;
 	while (i < fractal->max_iterations)
@@ -87,5 +87,5 @@ void	fractal_render(t_fractal *fractal)
 		}
 	}
 	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window,
-			fractal->img.img_ptr, 0, 0);
+		fractal->img.img_ptr, 0, 0);
 }
