@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 23:44:52 by mohkhald          #+#    #+#             */
-/*   Updated: 2024/12/05 16:59:20 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
@@ -16,6 +5,8 @@
 /* Builte in library*/
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
+# include <stdint.h>
 
 /* My libft functions*/
 

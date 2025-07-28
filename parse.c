@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 01:37:26 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/17 22:51:06 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "fractal.h"
 
@@ -51,8 +40,7 @@ void	handle_julia(char **av, t_fractal *fractal)
 
 int	ft_isspace(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r');
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
 static double	handle_decimal_part(const char *str, int *i)

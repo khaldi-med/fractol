@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/11/18 07:11:28 by mohkhald          #+#    #+#              #
-#    Updated: 2024/11/30 19:31:59 by mohkhald         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 
 SRCS =  ft_putendl_fd.c ft_isalpha.c ft_isdigit.c ft_atoi.c\
         ft_putstr_fd.c ft_calloc.c ft_isalnum.c ft_isascii.c\

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mohkhald <mohkhald@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 01:21:01 by mohkhald          #+#    #+#             */
-/*   Updated: 2025/04/17 22:51:12 by mohkhald         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "fractal.h"
 
@@ -36,11 +25,65 @@ static void	mandel_vs_julia(t_complex *z, t_complex *c, t_fractal *fractal)
 	}
 }
 
+static int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
 static int	get_color(int i, t_fractal *fractal)
 {
+	double	t;
+	int		r, g, b;
+
 	if (i == fractal->max_iterations)
 		return (BLACK);
-	return ((LIME_SHOCK >> 16) + (i * i * i));
+	
+	// Normalize iteration count to 0-1 range
+	t = (double)i / fractal->max_iterations;
+	
+	// Create beautiful gradient color schemes
+	if (t < 0.16)
+	{
+		// Deep blue to cyan transition
+		r = (int)(9 * (1 - t) * t * t * t * 255);
+		g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+		b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	}
+	else if (t < 0.42)
+	{
+		// Cyan to yellow transition
+		r = (int)(8.5 * (1 - t) * t * t * t * 255);
+		g = (int)(17 * (1 - t) * (1 - t) * t * t * 255);
+		b = (int)(0.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	}
+	else if (t < 0.6425)
+	{
+		// Yellow to red transition
+		r = (int)(255 * (1 - (1 - t) * (1 - t)));
+		g = (int)(255 * (1 - t * t));
+		b = (int)(128 * (1 - t));
+	}
+	else if (t < 0.8575)
+	{
+		// Red to magenta transition
+		r = (int)(255 * (1 - 0.2 * t));
+		g = (int)(32 * t);
+		b = (int)(255 * t * t);
+	}
+	else
+	{
+		// Magenta to white transition
+		r = (int)(255 * (0.5 + 0.5 * t));
+		g = (int)(255 * t * t * t);
+		b = (int)(255 * (0.8 + 0.2 * t));
+	}
+	
+	// Ensure values are within valid range
+	r = (r > 255) ? 255 : (r < 0) ? 0 : r;
+	g = (g > 255) ? 255 : (g < 0) ? 0 : g;
+	b = (b > 255) ? 255 : (b < 0) ? 0 : b;
+	
+	return (create_trgb(0, r, g, b));
 }
 
 static void	handle_pixel(int x, int y, t_fractal *fractal)
@@ -55,11 +98,11 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 	old_range.max = WIDTH;
 	new_range.min = -2;
 	new_range.max = 2;
-	z.x = (map(x, new_range, old_range) / fractal->zoom);
+	z.x = (map(x, new_range, old_range) / fractal->zoom) + fractal->shift_x;
 	new_range.min = 2;
 	new_range.max = -2;
 	old_range.max = HEIGHT;
-	z.y = (map(y, new_range, old_range) / fractal->zoom);
+	z.y = (map(y, new_range, old_range) / fractal->zoom) + fractal->shift_y;
 	mandel_vs_julia(&z, &c, fractal);
 	i = 0;
 	while (i < fractal->max_iterations)
@@ -87,5 +130,5 @@ void	fractal_render(t_fractal *fractal)
 		}
 	}
 	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window,
-		fractal->img.img_ptr, 0, 0);
+			fractal->img.img_ptr, 0, 0);
 }
